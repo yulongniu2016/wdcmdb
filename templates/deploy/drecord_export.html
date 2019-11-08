@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load custom_tag %}
+{% load mytags %}
+{% block header-css %}
+{% endblock %}
+
+{% block page-content-title %}
+任务运行日志
+{% endblock %}
+
+{% block page-nav-tab %}
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li class="active">计划任务日志</li>
+</ol>
+{% endblock %}
+
+
+
+{% block page-content %}
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+
+    <!-- Main content -->
+
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">任务名称: {{ taskname }}</h3>
+
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+        <div class="box-body" style="background-color:black; color:white; white-space: pre;">
+        <p>
+
+        {% for d in ret %}
+        {{ d|res_splict|safe }}<br>
+        {% endfor %}
+
+        </p>
+        </div>
+        <!-- /.box-body -->
+       <a href="javascript: location.reload();"> <li class="btn btn-primary" style="width: 60pt">刷新页面</li></a>
+       <a href="{% url 'drecord_list' %}"> <li class="btn btn-primary" style="width: 60pt">返回</li></a>
+        <div class="box-footer">
+          <i class="fa fa-info-circle"></i>
+        </div>
+        <!-- /.box-footer-->
+      </div>
+      <!-- /.box -->
+
+    </section>
+
+  </div>
+{% endblock %}
+
+{% block  bottom-js %}
+{% endblock %}

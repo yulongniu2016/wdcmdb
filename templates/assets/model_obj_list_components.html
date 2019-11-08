@@ -1,0 +1,101 @@
+<!--
+  1.自定义标签
+  2.位于 assets/templatetags/custom_tag.py 程序内
+-->
+{% load custom_tag %}
+
+<div class="table-responsive">
+
+    <table id="asset_list" class=" table  table-hover">
+      <thead >
+            <tr class="">
+                <!-- 
+                  资产列表-表头部分一（前部）：
+                  1.表头由三部分组成
+                  2.只显示表头，并在一行中显示
+                  3.有排序功能，点击可以升序、降序  
+                -->
+                {% for column in table_obj.list_display %}
+                <th class="column-sorted">
+                    <a href="?page={{ table_obj.query_sets.number }}&orderby={% if table_obj.orderby_col_index == forloop.counter0 %}{{ table_obj.orderby_field}}{% else %}{{ column }}{% endif %}" >
+                        {% get_table_column column table_obj %}
+                        {% display_orderby_arrow table_obj forloop.counter0 %}
+                    </a>
+                </th>
+                {% endfor %}
+                <!-- 
+                  资产列表-表头部分二（中部）：
+                  1.显示 model,sub_asset_type,os_type,os_type表头 
+                -->
+                {% for column in table_obj.dynamic_list_display %}
+                    <th class="column-sorted">
+                        <a href="#" >
+                            {#{% get_fk_table_column column table_obj %}#}
+                            {{ column }}
+                            {% display_orderby_arrow table_obj forloop.counter0 %}
+                        </a>
+                    </th>
+                {% endfor %}
+                <!-- display m2m colums-->
+                <!-- 
+                  资产列表-表头部分三（尾部）：
+                  1.只显示 tags表头  
+                -->
+                {% for column in table_obj.m2m_fields %}
+                    <th class="">{{  column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <!--
+          主体部分
+          1.显示数据记录
+          2.控制部分在./assets/templatetags/custom_tag.py程序
+          3.build_table_row函数来自./assets/templatetags/custom_tag.py 
+          4.table_obj来自 view.py 程序中def asset_list函数中
+        -->
+        <tbody>
+            {% for row in table_obj.query_sets %}
+                <tr>
+                    {% build_table_row row  table_obj 'id'  'server_detail'  %}
+                </tr>
+            {% endfor %}
+
+        </tbody>
+        <!--
+          分页部分：
+          1.显示记录条数、页数
+        -->
+        <footer>
+          <tr>
+                <td colspan="12" class="footable-visible">
+                    <div class="pagination">
+
+                        <nav>
+                            <p>共{{ paginator.count }}条数据</p>
+                            <ul class="pagination">
+                                {% if table_obj.query_sets.has_previous %}
+                                <li class="disabled">
+                                    <a href="{{ request.get_full_path }}?page={{ table_obj.query_sets.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                                </li>
+                                {% endif %}
+                                {% for p_num in paginator.page_range %}
+                                    {% render_page_num request table_obj.query_sets p_num %}
+                                {% endfor %}
+                                {% if customer_list.has_next %}
+                                <li>
+                                  <a href="{{ request.get_full_path }}?page={{ table_obj.query_sets.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                  </a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+
+                    </div>    <!--end pagination-->
+
+                </td>
+          </tr>
+        </footer>
+    </table>
+
+</div> <!--end table-responsive-->
