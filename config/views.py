@@ -43,3 +43,21 @@ def get_dir(args):
         return vars()[args]
     else:
         return HttpResponse(status=403)
+
+
+def db_config(args):
+  config = cf.RawConfigParser()
+  dbinfo = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+  with open(dbinfo+'/main.conf', 'r') as cfgfile:
+        config.readfp(cfgfile)
+  host = config.get('mysql', 'host')
+  port = config.get('mysql', 'port')
+  user = config.get('mysql', 'user')
+  pw = config.get('mysql', 'password')
+  name = config.get('mysql', 'name')
+
+  if args:
+      return vars()[args]
+  else:
+      return HttpResponse(status=403)
+
