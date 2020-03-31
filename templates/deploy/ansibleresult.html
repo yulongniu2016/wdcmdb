@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load custom_tag %}
+{% load mytags %}
+{% block header-css %}
+{% endblock %}
+<script src="/static/plugins/datatables/jQuery-2.1.4/jquery-2.1.4.js"></script>
+<script type="text/javascript">//<![CDATA[
+    //$(function () {
+        //$('#backup_all').click(function () {
+            var socket = new WebSocket("ws://" + window.location.host + "/deploy/echo_result/");
+            alert('ws://' + window.location.host + '/deploy/echo_result/')
+            socket.onopen = function () {
+                console.log('WebSocket open');//成功连接上Websocket
+                socket.send($('#backup_all').val());//发送数据到服务端
+            };
+            socket.onmessage = function (e) {
+                console.log('message: ' + e.data);//打印服务端返回的数据
+                $('#messagecontainer').prepend('<p><pre>' + e.data + '</pre></p>');
+                $('#messagecontainer').prepend('<hr />');
+            };
+        //});
+    //});
+</script>
+<input type="hidden" name="username" id="backup_all" value="backup_all"><br>
+
+{% block page-content-title %}
+Ansible 任务结果
+{% endblock %}
+
+{% block page-nav-tab %}
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li class="active">Ansible 任务结果</li>
+</ol>
+{% endblock %}
+
+
+
+{% block page-content %}
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    </section>
+
+    <!-- Main content -->
+
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Ansible 执行结果</h3>
+
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+        <div class="box-body" style="background-color:black; color:white">
+        <p>
+            <br>hello, beijing!!!
+
+            <div id="messagecontainer" style="margin: 20px;">
+            </div>
+
+        </p>
+        </div>
+        <!-- /.box-body -->
+       <a href="{% url 'drecord_list' %}"> <li class="btn btn-primary" style="width: 60pt">返回</li></a>
+        <div class="box-footer">
+          <i class="fa fa-info-circle"></i>
+        </div>
+        <!-- /.box-footer-->
+      </div>
+      <!-- /.box -->
+
+    </section>
+
+  </div>
+{% endblock %}
+
+{% block  bottom-js %}
+{% endblock %}
