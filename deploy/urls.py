@@ -1,13 +1,17 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.conf.urls import url, include
-from deploy import views, sysdeploy, deployrecord
+from deploy import views, sysdeploy, deployrecord, ansible
 
 
 urlpatterns = [
 
-    # This ansible功能模块开始
-    #url(r'sansible/$', ansible.index, name='ansible'),
+    # ansible功能模块开始
+    url(r'ansible/$', ansible.index, name='ansible'),
+    #url(r'^ansible/command/$', ansible.ansible_command, name='acommand'),
+    url(r'^playbook/$', ansible.playbook, name='playbook'),
+    url(r'ansible/web_socket/$', ansible.web_socket),
+
     url(r'sysdeploy/$', sysdeploy.index, name='sysdeploy'),
     url(r'^sysplaybook/$', sysdeploy.splaybook, name='sysplaybook'),
     url(r'^srecordapi/$', sysdeploy.srecordapi, name='srecordapi'),

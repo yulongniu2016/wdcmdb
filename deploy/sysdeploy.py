@@ -282,11 +282,11 @@ def splaybook(request):
 def srecordapi(request):
     
     # This 总体记录功能
-    # shell usage: curl -d "taskid=20190402150833403980.log&status=2&endtime=2019-4-12" http://192.168.99.172:8000/deploy/srecordapi/
     if request.method == 'POST':
         print("---> It's POST")
 
         # It's get for json
+        # http://10.199.89.212:7000/redisset/?name=xxx&value=xxx
         print("---> It's JSON")
         print("--->request.body: ", request.body)
         receive_data = json.loads(request.body.decode('utf-8'))
@@ -297,6 +297,7 @@ def srecordapi(request):
         print("--->tid, status, etime: ", receive_data['tid'],receive_data['status'],receive_data['etime'])
         '''
         # It's post
+        # shell usage: curl -H "Content-Type: application/json" -X POST -d '{"name":"neimeng","value":"huhehaote"}' http://10.199.89.212:7000/redisset/
         taskid = request.POST.get('tid')
         taskstatus = request.POST.get('status')
         taskendtime = request.POST.get('etime')

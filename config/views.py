@@ -19,6 +19,7 @@ def get_dir(args):
     with open(dirs+'/main.conf', 'r') as cfgfile:
         config.readfp(cfgfile)
         a_path = config.get('config', 'ansible_path')
+        a_d_path = config.get('config', 'ansible_data_path')
         r_path = config.get('config', 'roles_path')
         p_path = config.get('config', 'playbook_path')
         a_s_path = config.get('config', 'ansible_scripts_path')
